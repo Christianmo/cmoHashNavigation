@@ -8,6 +8,10 @@ Basic JS form validation library.
 npm i cmohashnavigation
 ```
 
+```javascript
+import cmoHashNavigation from 'cmoHashNavigation';
+```
+
 ### Setting
 
 ```javascript
