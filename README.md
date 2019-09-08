@@ -9,7 +9,7 @@ npm i cmohashnavigation
 ```
 
 ```javascript
-import cmoHashNavigation from 'cmoHashNavigation';
+import cmoHashNavigation from 'cmohashnavigation';
 ```
 
 ### Setting
