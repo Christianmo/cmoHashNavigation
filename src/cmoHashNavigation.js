@@ -58,20 +58,22 @@
   
   function cmoHashNavigation(options) {
     var nav = document.querySelector(options.selector);
-    var links = nav.querySelectorAll('a');
+    var links = nav.querySelectorAll(options.childSelector);
     var linksPosArr = [];
-  
-    [].forEach.call(links, function(link) {
-      var section = link.getAttribute('href');
-      if (section[0] === '#') {
-        var sectionEl = document.querySelector(section);
-        var linkEl = link;
-        var topPos = sectionEl.offsetTop;
-        var bottomPos = topPos + sectionEl.offsetHeight;
-  
-        linksPosArr.push({
-          linkEl: linkEl, sectionEl: sectionEl, topPos: topPos, bottomPos: bottomPos,
-        });
+    var isSelector = options.type === 'select';
+
+    [].forEach.call(links, function(link) {    
+      var sectionSelector = link.dataset.hash;
+      var sectionEl = document.querySelector(sectionSelector);
+      var linkEl = link;
+      var topPos = sectionEl.offsetTop;
+      var bottomPos = topPos + sectionEl.offsetHeight;
+
+      linksPosArr.push({
+        linkEl: linkEl, sectionEl: sectionEl, topPos: topPos, bottomPos: bottomPos,
+      });
+
+      if (!isSelector) {
         link.addEventListener('click', function() {
           var nextPos = sectionEl.offsetTop;
           scrollToPos(nextPos, options);
@@ -79,6 +81,15 @@
       }
     });
   
+    if (isSelector) {
+      nav.addEventListener('change', function() {
+        var sectionSelector = nav.options[nav.selectedIndex].dataset.hash;
+        var sectionEl = document.querySelector(sectionSelector);
+        var nextPos = sectionEl.offsetTop;
+        scrollToPos(nextPos, options);        
+      })
+    }
+
     onScrollHandle(linksPosArr);
   }
 
