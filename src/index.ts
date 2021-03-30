@@ -14,6 +14,15 @@
 }(this, function() {
   'use strict';
 
+  interface IOptions {
+    selector: string;
+    childSelector: string;
+    type: string;
+    time: number;
+    easing: string;
+    cb: () => any
+  }
+
   const easingFunctions: any = {
     linear: function(t:number) { return t; },
     easeInQuad: function(t:number) { return t * t; },
@@ -30,7 +39,7 @@
     easeInOutQuint: function(t:number) { return t < 0.5 ? 16 * t * t * t * t * t : 1 + 16 * (--t) * t * t * t * t; },
   };
   
-  function scrollToPos(nextPos: number, options: any) {
+  function scrollToPos(nextPos: number, options: IOptions) {
     var currentPos = window.pageYOffset;
     var startTime = window.performance.now();
   
@@ -44,6 +53,7 @@
         window.requestAnimationFrame(scrollAnimation);
       } else {
         window.scrollTo(0, nextPos);
+        if (options.cb) options.cb();
       }
     }
   
@@ -62,8 +72,14 @@
     });
   }
   
-  function cmoHashNavigation(options:any) {
-    const nav = document.querySelector(options.selector);
+  function cmoHashNavigation(options: IOptions) {
+    const nav: any = document.querySelector(options.selector);
+
+    if(!nav) {
+      console.info(`Missing selector: ${options.selector}`);
+      return false;
+    }    
+    
     const links = nav.querySelectorAll(options.childSelector);
     const linksPosArr:any = [];
     const isSelector = options.type === 'select';

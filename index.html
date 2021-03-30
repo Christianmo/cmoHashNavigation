@@ -70,6 +70,7 @@
         childSelector: '.hash-link',
         time: 2000,
         easing: 'easeInOutQuad',
+        cb: () => console.log("animation finish")
       });    
 
       cmoHashNavigation({
@@ -78,6 +79,7 @@
         type: 'select',
         time: 2000,
         easing: 'easeInOutQuad',
+        cb: () => console.log("end")
       });    
     </script>
   </body>
